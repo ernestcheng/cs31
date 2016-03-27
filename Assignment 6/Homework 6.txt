@@ -1,0 +1,247 @@
+Homework 6
+
+Question 1(a)
+
+Problem:
+1. Because loop prints backwards, numbers must be reversed (30 to 10, 20 to 20, 10 to 30).
+2. Cannot assign 20 after adding 1 to *ptr in this line: *ptr + 1 = 20. Must put parenthesis around ptr + 1.
+3. Wrong to iterate ptr before printing. Move ptr-- to after cout.
+
+int main()
+{
+    int arr[3] = { 5, 10, 15 };
+    int* ptr = arr;
+    
+    *ptr = 10; // Fixing bug (1).
+    *(ptr + 1) = 20; // Fixing bug (2).
+    ptr += 2;
+    ptr[0] = 30;
+    
+    while (ptr >= arr)
+    {
+        cout << *ptr << endl;
+        ptr--; // Fixing bug (3).
+    }
+}
+
+Question 1(b)
+
+Problem:
+The function is passing the pointer variable (ptr) by value instead of by reference. Adding a & to the parameter in findMax function declaration can fix this.
+
+void findMax(int arr[], int n, int*& pToMax) // Pass by reference instead of pass by value.
+{
+    if (n <= 0)
+        return;
+    
+    pToMax = arr;
+    
+    for (int i = 1; i < n; i++)
+    {
+        if (arr[i] > *pToMax)
+            pToMax = arr + i;
+    }
+}
+
+Question 1(c)
+
+Problem: Pointer ptr is not pointing to anything. Making a variable a for ptr to point to can fix this.
+
+void computeCube(int n, int* ncubed)
+{
+    *ncubed = n * n * n;
+}
+
+int main()
+{
+    int a;
+    int* ptr = &a; // Creating variable a for ptr to point to.
+    computeCube(5, ptr);
+    cout << "Five cubed is " << *ptr << endl;
+}
+
+Question 1(d)
+
+Problem: As originally written, the function strequal compares the CStrings themselves. The loop always runs but always returns false as str1 != str2. Instead, we have to compare the individual characters using pointers. Since by default, the function parameters are arrays and therefore pointers, the problem can be fixed by using the dereference operator to compare individual characters.
+
+bool strequal(const char str1[], const char str2[])
+{
+    while (*str1 != 0  &&  *str2 != 0) // Loops as long as neither reach the null terminator character.
+    {
+        if (*str1 != *str2) // Compares the actual character values at the location using the dereference operator.
+            return false;
+        str1++; // Increments the locations forward one position.
+        str2++;
+    }
+    return *str1 == *str2; // Compares the characters to make sure both have reached the null terminator.
+}
+
+int main()
+{
+    char a[15] = "Noor";
+    char b[15] = "Noah";
+    
+    if (strequal(a,b))
+        cout << "They're the same person!\n";
+}
+
+Question 1(e)
+
+Problem: getPtrToArray function returns the address of the array anArray. However, since the array is only initialized locally within the function. The main function cannot access it properly.
+
+Question 2(a)
+
+double* cat;
+
+Question 2(b)
+
+double mouse[5];
+
+Question 2(c)
+
+cat = mouse + 4;
+
+Question 2(d)
+
+*cat = 42;
+
+Question 2(e)
+
+*(mouse + 3) = 25;
+
+Question 2(f)
+
+cat -= 3;
+
+Question 2(g)
+
+cat[1] = 17;
+
+Question 2(h)
+
+cat[0] = 54;
+
+Question 2(i)
+
+bool b = *cat == *(cat + 1);
+
+Question 2(j)
+
+bool d = cat == mouse;
+
+Question 3(a)
+
+double mean(const double* scores, int numScores)
+{
+    double tot = 0;
+    for (int i = 0; i < numScores; i++)
+        tot += *(scores+i);
+    return tot/numScores;
+}
+
+Question 3(b)
+
+const char* findTheChar(const char* str, char chr)
+{
+    for (int k = 0; *(str+k) != 0; k++)
+        if (*(str+k) == chr)
+            return str+k;
+    
+    return nullptr;
+}
+
+Question 3(c)
+
+const char* findTheChar(const char* str, char chr)
+{
+    while (*str != 0)
+    {
+        if (*str == chr)
+            return str;
+        str++;
+    }
+    
+    return nullptr;
+}
+
+Question 4
+
+The program prints:
+
+3
+4
+79
+-1
+9
+22
+19
+
+Function maxwell
+Returns the location of the larger of value a and value b.
+
+Function swap1
+Swaps the location of a and b locally, but since the function passes by value, does not swap any of the locations / values outside of the function.
+
+Function swap2
+Swaps the values of a and b at the location of the two input variables which does swap the values of the input.
+
+int* ptr = maxwell(array, &array[2]);
+Initializes pointer ptr with the location the larger of the first value of array and third value of array, which is the location of the first element of array.
+
+*ptr = -1;
+Sets the value of the first element of array (where ptr is pointing to) to -1.
+
+ptr += 2;
+Adds 2 to ptr, now ptr is pointing to the third element of the array (currently 4).
+
+ptr[1] = 9;
+Equivalent to *(ptr+1) = 9, sets the value of the fourth element (location 1 further than ptr) to 9.
+
+*(array+1) = 79;
+Since array is the location of the first element of the array, this statement sets the value of the second element of the array to 79.
+
+cout << &array[5] - ptr << endl;
+Prints the location of fifth element of the array minus the pointer ptr (which is at the second element of the array). This is the output:
+
+	3
+
+swap1(&array[0], &array[1]);
+Does nothing. Inputs the location of the first element of array and second element of array, but while the locations are switched within the swap1 function, it is passed by value and therefore has no change outside of the function.
+
+swap2(array, &array[2]);
+Swaps the value at the location of the first element (-1) with the value at the location of the second element (4).
+
+for (int i = 0; i < 6; i++)
+	cout << array[i] << endl;
+Loops through the array element by element, printing the element and ending the line each time. This is the output:
+
+	4
+	79
+	-1
+	9
+	22
+	19
+
+Question 5
+
+void removeS(char* msgPtr)
+{
+    char* msgPtr2 = msgPtr;
+    while (*msgPtr != 0)
+    {
+        *msgPtr2 = *msgPtr;
+        if (*msgPtr2 != 'S' && *msgPtr2 != 's')
+            msgPtr2++;
+        msgPtr++;
+    }
+    *msgPtr2 = 0;
+}
+
+
+
+
+
+
+
+
+

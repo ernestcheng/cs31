@@ -1,0 +1,78 @@
+Question 1:
+
+endlendl
+grendel
+
+Question 2:
+
+Prints out steps using the character "#"" with height "side". The highest row will have 1 "#" character. Each descending row will have increasing number of “#” characters by 1. The lowest row will have "side" number of "#" characters.
+
+Question 3:
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int side;
+    
+    cout << "Enter a number: ";
+    cin >> side;
+    
+    for (int i = 0; i < side; i++)
+    {
+        int j = i;
+        while (j >= 0)
+        {
+            cout << "#";
+            j--;
+        }
+        cout << "\n";
+    }
+}
+
+Question 4:
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int side;
+    
+    cout << "Enter a number: ";
+    cin >> side;
+    
+    if (side <= 0)
+        return 0;
+    
+    int i = 0;
+    do
+    {
+        int j = i;
+        while (j >= 0)
+        {
+            cout << "#";
+            j--;
+        }
+        cout << "\n";
+        i++;
+    } while (i < side);
+}
+
+Question 5:
+
+switch (codeSection)
+{
+    case 281: cout << "bigamy";
+        break;
+    case 32 	1:
+    case 322: cout << "selling illegal lottery tickets";
+        break;
+    case 383: cout << "selling rancid butter";
+        break;
+    case 598: cout << "wounding a bird in a public cemetery";
+        break;
+    default: cout << "some other crime";
+        break;
+}

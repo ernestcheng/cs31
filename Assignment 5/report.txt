@@ -1,0 +1,41 @@
+ a) I had problems with the size of the probe word because I initially wanted it to be [7] characters long (including null terminator). I ran into problems finding the length of string as it was limited to 7 characters. I also had problems with buffer overflow (having to cin.clear every time), but this was solved by making the string character length 101 (including null terminator) as the spec states the following.
+	You may assume (i.e., we promise when testing your program) that any line entered in response to the probe word prompt will contain fewer than 100 characters (not counting the newline at the end).
+
+b) My code does the following:
+
+main Function:
+
+Loads words into array.
+Checks for errors in the words loaded.
+
+Queries user for number of rounds.
+Checks for errors in the number of rounds.
+
+Defines variables for round success statistics.
+
+Repeats for the number of rounds the following...
+	Create random secret word number.
+	Find and print length of secret word.
+	Call function manageOneRound, which returns the number of attempts.
+
+	Print out number of tries and statistical data.
+
+
+manageOneRound Function:
+
+Checks for errors in number of words in array.
+Defines secret word and probe word.
+
+Repeats while probe word is not equal to secret word the following...
+	Queries user for probe word.
+	Check for errors in the probe words, continue loop if there are.
+
+	While looping through the probe word string, increment number of rocks when there is matching character in the same location.
+
+	While looping through the probe word string, then looping through the secret word string, increment number of pebbles when there is a matching character in any location.
+
+	Prints number of rocks and pebbles.
+
+	Increments attempt count.
+
+Returns attempt count.

@@ -1,0 +1,89 @@
+a) I initially had difficulty converting the number of steps in a string route segment to an integer. However, I tried casting integer to character and realized that they were in consecutive order.
+
+b)
+
+Function isRouteWellFormed tests whether the route is valid.
+	Test whether the route is empty.
+		Return true if empty.
+	Test whether the first character is a direction value (cannot begin with a step value).
+		If it is a step, return false.
+	Test whether the the following characters are valid by cycling through the string with a loop.
+		If it is a direction value, continue with loop.
+		If it is a digit, check whether it is two or less digits in a row.
+			If it is <2, continue with loop.
+			If it is >2, return false.
+	If passed until here, return true.
+
+Function isValid tests whether a position is valid (no wall, on the grid).
+	Return true if coordinate is within grid and not on a wall.
+	Return false if otherwise.
+
+
+Function navigateSegment tests whether the number of steps exceeds the maximum in a certain direction.
+	For each direction: by adding the steps through a loop:
+		Check whether it hits a wall or grid boundary.
+		Add to a new variable max for every iteration.
+	Return the maximum.
+
+Function navigateRoute tests whether the grid is navigable by a robot with a given route.
+	If route, starting location and ending location not valid, return 2.
+	Cycle through the route with a for loop looking for a direction value.
+		When the value is a direction:
+			Move 1 step in direction if there is no step value after.
+			Move X steps in direction if there are 1 or 2 values after.
+			Add the number of steps taken to variable nsteps.
+			If it runs into a wall or off the grid, add the maximum to nsteps and return 3.
+			If not, continue looping through the route.
+	When route is complete, check whether it is at ending location.
+		If it is, return 0.
+		If it is not, return 1.
+
+c)
+
+Grid with 3 rows and 4 columns.
+Walls on (1,4), (2,2), (3,2).
+
+    assert(isRouteWellFormed("n2e1")); // When route is valid.
+    assert(isRouteWellFormed("N2eE01n0e2e1")); // When route is valid.
+    assert(isRouteWellFormed("")); // When route is empty but valid.
+    assert(isRouteWellFormed("W42")); // When route is valid.
+    assert(!isRouteWellFormed("e1x")); // When invalid alpha character is present.
+    assert(!isRouteWellFormed("w2+n3")); // When invalid character is present.
+    assert(!isRouteWellFormed("!")); // When invalid character is present.
+    assert(!isRouteWellFormed("N144")); // When there are more than 2 consecutive digits.
+    assert(!isRouteWellFormed("3sn")); // When the route begins with a digit.
+    
+    assert(navigateSegment(3, 1, 'N', 2) == 2); // When segment is correctly navigable.
+    assert(navigateSegment(1, 3, 'S', 5) == 2); // When number of steps is above maximum.
+    assert(navigateSegment(3, 4, 'N', 5) == 1); // When number of steps is above maximum.
+    assert(navigateSegment(1, 1, 'E', 5) == 2); // When number of steps is above maximum.
+    assert(navigateSegment(1, 1, 'e', 5) == 2); // When number of steps is above maximum.
+    assert(navigateSegment(1, 1, 'e', 0) == 0); // When number of steps is above maximum.
+    assert(navigateSegment(2, 2, 'N', 5) == -1); // When (r,c) is not a valid empty grid position.
+    assert(navigateSegment(-2, 2, 'N', 5) == -1); // When (r,c) is not a valid empty grid position.
+    assert(navigateSegment(3, 1, 'N', -5) == -1); // When maxSteps is a negative value.
+    assert(navigateSegment(3, 1, 'A', 5) == -1); // When char dir is not a direction value (N, E, S, W).
+    
+    int len;
+    len = -999;
+    assert(navigateRoute(3,1, 3,4, "e1x", len) == 2  &&  len == -999); // When route is syntactically incorrect.
+    len = -999;
+    assert(navigateRoute(10,1, 3,4, "n2e1", len) == 2  &&  len == -999); // When sr is larger than number of rows.
+    len = -999;
+    assert(navigateRoute(2,2, 3,4, "n2e1", len) == 2  &&  len == -999); // When (sr,sc) is wall.
+    len = -999;
+    assert(navigateRoute(-2,2, 3,4, "n2e1", len) == 2  &&  len == -999); // When sr is negative.
+    len = -999;
+    assert(navigateRoute(3,1, 3,4, "N2eE01n0s2e1", len) == 0  &&  len == 7); // When navigation is successful and endpoint is reached.
+    len = -999;
+    assert(navigateRoute(3,1, 3,4, "N01N01E01E01n0sse01", len) == 0  &&  len == 7); // When navigation is successful and endpoint is reached.
+    len = -999;
+    assert(navigateRoute(3,1, 3,1, "", len) == 0  &&  len == 0); // When navigation is successful and endpoint is reached.
+    len = -999;
+    assert(navigateRoute(3,1, 3,4, "N2", len) == 1  &&  len == 2); // When navigation is successful and endpoint is not reached.
+    len = -999;
+    assert(navigateRoute(3,1, 3,4, "N2E1", len) == 1  &&  len == 3); // When navigation is successful and endpoint is not reached.
+    len = -999;
+    assert(navigateRoute(3,1, 3,4, "N2es2", len) == 3  &&  len == 3); // When navigation is unsuccessful (runs into a wall).
+    len = -999;
+    assert(navigateRoute(3,1, 3,4, "N3e2s2", len) == 3  &&  len == 2); // When navigation is unsuccessful (runs off the grid).
